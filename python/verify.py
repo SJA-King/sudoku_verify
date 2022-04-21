@@ -115,7 +115,7 @@ def args_parser():
         description='')
     parser.add_argument('--debug', help='Enable Debug Output', action='store_true')
     parser.add_argument('--csv', help='Point to a csv file with 81 values', type=str)
-    parser.add_argument('--example', help='Run an example: 1, 2', type=int)
+    parser.add_argument('--example', help='Run an example: 1 (VALID), 2 (VALID), 3 (INVALID)', type=int)
 
     args = parser.parse_args()
 
@@ -164,8 +164,19 @@ def main():
                                         7, 8, 6, 2, 3, 5, 9, 1, 4,
                                         1, 5, 4, 7, 9, 6, 8, 2, 3,
                                         2, 3, 9, 8, 4, 1, 5, 6, 7])
+        elif args.example == 3:
+            board_to_verify = bd.Board([8, 2, 7, 1, 5, 4, 9, 9, 6,
+                                        9, 6, 5, 3, 2, 7, 1, 4, 8,
+                                        3, 4, 1, 6, 8, 9, 5, 5, 2,
+                                        5, 2, 4, 4, 6, 4, 2, 7, 1,
+                                        4, 7, 2, 5, 3, 3, 6, 9, 6,
+                                        6, 1, 8, 9, 7, 2, 4, 3, 4,
+                                        7, 8, 7, 2, 3, 5, 8, 1, 4,
+                                        1, 4, 8, 7, 4, 6, 8, 2, 3,
+                                        2, 1, 9, 2, 3, 1, 5, 1, 1])
         else:
             raise Exception(f"Must denote example number, {args.example}")
+
     else:
         raise Exception("Must denote if this file is running with a file or the examples")
 
