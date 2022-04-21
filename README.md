@@ -13,11 +13,12 @@ This Script can be called directly or via the Python Consol
 ### Command Line
 ```Bash
 cd sudoku_verify
-python3 python/verify.py --example 1 --debug
-python3 python/verify.py --example 2
+python3 python/verify.py --example 1 --debug # VALID
+python3 python/verify.py --example 2 # VALID
+python3 python/verify.py --example 3 # INVALID
 python3 python/verify.py --csv ???.csv
 ```
-Tell the Verifier to run on either of 2 examples
+Tell the Verifier to run on either of 3 examples, example 3 is INVALID
 
 ### Python Console
 ```Bash
@@ -49,5 +50,5 @@ You can also edit a Board once its been made, see board.py for more information
 - Allow editing of row or column to start from within column or row and not always from beginning
 - Allow creation of new board with "holes" if you want to replace large areas of the board
 - Have single method to check values are ints and between 0-9 or 1-9 etc
-- Add an INVALID example
+- ~~Add an INVALID example~~
 - Add Diagonal verification
