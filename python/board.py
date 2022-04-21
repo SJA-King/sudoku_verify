@@ -2,10 +2,10 @@
 """
 
 """
-from typing import List
+import logging
 import numpy as np
+from typing import List
 
-DEBUG = True
 # We are dealing with just 3x3 grids so max is fixed
 MAX_SCALE = 9
 
@@ -23,8 +23,11 @@ def check_single_digit_int(single_int: int) -> bool:
 
 
 def dbg(msg: str) -> None:
-    if DEBUG:
-        print(msg)
+    logging.debug(msg)
+
+
+def info(msg: str) -> None:
+    logging.info(msg)
 
 
 class Board:
@@ -35,47 +38,43 @@ class Board:
 
     def __init__(self, values: List):
         if len(values) != MAX_SCALE*MAX_SCALE:
-            raise Exception(f"Creating a Board needs to have all {MAX_SCALE*MAX_SCALE} values\n{values}")
-        board = np.empty(shape=(MAX_SCALE, MAX_SCALE))
+            raise Exception(f"Creating a Board needs to have all {MAX_SCALE*MAX_SCALE} values!\n{values}")
+        self.the_board = np.empty(shape=(MAX_SCALE, MAX_SCALE))
         counter = 0
 
         for x in range(MAX_SCALE):
             for y in range(MAX_SCALE):
                 dbg(f"x: {x}, y: {y}, counter: {counter}, value: {values[counter]}")
                 if check_single_digit_int(values[counter]):
-                    board[x, y] = values[counter]
+                    self.the_board[x, y] = values[counter]
                     counter += 1
-        dbg(f"The Board,\n{board}")
+        dbg(f"The Board,\n{self.the_board}")
 
     def edit_row(self, y_pos: int, values: [int]) -> None:
-        # todo allow new row to start from certain column
-        # todo for now allow 0, 0 etc
-        # 0 implies keep original
-        pass
+        if len(values) != MAX_SCALE:
+            raise Exception(f"Editing a Row needs {MAX_SCALE} values!\n{values}")
+        counter = 0
+        for x in range(MAX_SCALE):
+            self.the_board[x, y_pos] = values[counter]
+            counter += 1
 
     def edit_column(self, x_pos: int, values: [int]) -> None:
-        pass
+        if len(values) != MAX_SCALE:
+            raise Exception(f"Editing a Column needs {MAX_SCALE} values!\n{values}")
+        counter = 0
+        for y in range(MAX_SCALE):
+            self.the_board[x_pos, y] = values[counter]
+            counter += 1
 
     def edit_single_tile(self, y_pos: int, x_pos: int, value: int) -> None:
-        pass
+        if check_single_digit_int(value):
+            self.the_board[x_pos, y_pos] = value
+
+    def display(self):
+        print(self.the_board)
+
+    def get_tile_value(self, y_pos: int, x_pos: int) -> int:
+        return self.the_board[x_pos, y_pos]
 
 
-valid_board_i = Board([2, 4, 8, 3, 9, 5, 7, 1, 6,
-                       5, 7, 1, 6, 2, 8, 3, 4, 9,
-                       9, 3, 6, 7, 4, 1, 5, 8, 2,
-                       6, 8, 2, 5, 3, 9, 1, 7, 4,
-                       3, 5, 9, 1, 7, 4, 6, 2, 8,
-                       7, 1, 4, 8, 6, 2, 9, 5, 3,
-                       8, 6, 3, 4, 1, 7, 2, 9, 5,
-                       1, 9, 5, 2, 8, 6, 4, 3, 7,
-                       4, 2, 7, 9, 5, 3, 8, 6, 1])
 
-valid_board_j = Board([8, 2, 7, 1, 5, 4, 3, 9, 6,
-                       9, 6, 5, 3, 2, 7, 1, 4, 8,
-                       3, 4, 1, 6, 8, 9, 7, 5, 2,
-                       5, 9, 3, 4, 6, 8, 2, 7, 1,
-                       4, 7, 2, 5, 1, 3, 6, 8, 9,
-                       6, 1, 8, 9, 7, 2, 4, 3, 5,
-                       7, 8, 6, 2, 3, 5, 9, 1, 4,
-                       1, 5, 4, 7, 9, 6, 8, 2, 3,
-                       2, 3, 9, 8, 4, 1, 5, 6, 7])
