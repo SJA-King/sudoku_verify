@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
+This Script enables a user to verify a 9x9 board of 81 integers is a VALID Sudoku Solution
 
+Can be called via command line or imported as a module
 """
 import argparse
 import board as bd
@@ -13,6 +15,7 @@ def verify_board(a_board: bd.Board, diag: bool):
     """
     Run all the verification methods to validate if a sudoku solution is VALID!
     """
+    print(f"Verifying Board:\n{a_board.display()}")
     board_valid = True
     verify_methods = [verify_squares(a_board),
                       verify_rows(a_board),
@@ -26,7 +29,6 @@ def verify_board(a_board: bd.Board, diag: bool):
 
     if board_valid:
         print("Board is a VALID Solution!")
-        logging.info(a_board)
     else:
         print(f"Board is an INVALID Solution!")
 
@@ -36,13 +38,27 @@ def verify_squares(a_board: bd.Board) -> (bool, [str]):
     Verify all squares of a Board are VALID solutions
     """
     all_squares_valid = True
-    invalid_squares = []
-
+    square_indexs = [(0, 3), (3, 6), (6, 9)]
     #0-2 - 0-2, 3-5, 6-8
     #3-5 - 0-2, 3-5, 6-8
     #6-8 - 0-2, 3-5, 6-8
+    for i in square_indexs:
+        for j in square_indexs:
+            square_valid = False
+            this_square = []
+            for row in range(i[0], i[1]):
+                for col in range(j[0], j[1]):
+                    this_square.append(a_board.get_tile_value(col, row))
 
-    return all_squares_valid, invalid_squares
+            if NUMBERS == set(this_square):
+                square_valid = True
+            else:
+                all_squares_valid = False
+            print(f"Square: {i}, {j}, {this_square}, Valid: {square_valid}")
+
+    if all_squares_valid:
+        print("ALL Squares VALID!")
+    return all_squares_valid
 
 
 def verify_rows(a_board: bd.Board) -> (bool, [str]):
@@ -58,10 +74,11 @@ def verify_rows(a_board: bd.Board) -> (bool, [str]):
 
         if NUMBERS == set(this_row):
             row_valid = True
-            bd.info(f"row: {row}, {this_row}, Valid: {row_valid}")
         else:
             all_rows_valid = False
-            print(f"row: {row}, {this_row}, Valid: {row_valid}")
+        print(f"row: {row}, {this_row}, Valid: {row_valid}")
+    if all_rows_valid:
+        print("ALL Rows VALID!")
     return all_rows_valid
 
 
@@ -78,10 +95,11 @@ def verify_columns(a_board: bd.Board) -> (bool, [str]):
 
         if set(NUMBERS) == set(this_column):
             column_valid = True
-            bd.info(f"column: {col}, {this_column}, Valid: {column_valid}")
         else:
             all_columns_valid = False
-            print(f"column: {col}, {this_column}, Valid: {column_valid}")
+        print(f"column: {col}, {this_column}, Valid: {column_valid}")
+    if all_columns_valid:
+        print("ALL Columns VALID!")
     return all_columns_valid
 
 
@@ -96,7 +114,6 @@ def args_parser():
     parser = argparse.ArgumentParser(
         description='')
     parser.add_argument('--debug', help='Enable Debug Output', action='store_true')
-    parser.add_argument('--info', help='Enable Info Output', action='store_true')
     parser.add_argument('--csv', help='Point to a csv file with 81 values', type=str)
     parser.add_argument('--example', help='Run an example: 1, 2', type=int)
 
@@ -115,8 +132,8 @@ def args_parser():
 
 def main():
     args = args_parser()
-
     board_to_verify = None
+
     if args.csv:
         import csv
         values = []
@@ -126,8 +143,9 @@ def main():
         for row in rows:
             for i_r in row:
                 values.append(int(i_r))
-        bd.dbg(str(values))
+
         board_to_verify = bd.Board(values)
+
     elif args.example:
         if args.example == 1:
             board_to_verify = bd.Board([2, 4, 8, 3, 9, 5, 7, 1, 6,
@@ -154,11 +172,7 @@ def main():
     else:
         raise Exception("Must denote if this file is running with a file or the examples")
 
-    # verify_rows(board_to_verify)
-    # verify_columns(board_to_verify)
-    verify_squares(board_to_verify)
-
-    # verify_all(board_to_verify, diag=False)
+    verify_board(board_to_verify, diag=False)
 
 
 if __name__ == "__main__":

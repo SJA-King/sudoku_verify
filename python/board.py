@@ -1,6 +1,8 @@
 #!/usr/bin/python3
 """
+This Script acts as the module for a 9x9 Board of 81 integers representing a Sudoku board
 
+A Board can be created via a python console or via another script using this one as a module
 """
 import logging
 import numpy as np
@@ -24,10 +26,6 @@ def check_single_digit_int(single_int: int) -> bool:
 
 def dbg(msg: str) -> None:
     logging.debug(msg)
-
-
-def info(msg: str) -> None:
-    logging.info(msg)
 
 
 class Board:
