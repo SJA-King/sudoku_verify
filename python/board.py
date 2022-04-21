@@ -49,6 +49,9 @@ class Board:
         dbg(f"The Board,\n{self.the_board}")
 
     def edit_row(self, y_pos: int, values: [int]) -> None:
+        """
+        Allow a user to update a row of the Sudoku Board
+        """
         if len(values) != MAX_SCALE:
             raise Exception(f"Editing a Row needs {MAX_SCALE} values!\n{values}")
         counter = 0
@@ -57,6 +60,9 @@ class Board:
             counter += 1
 
     def edit_column(self, x_pos: int, values: [int]) -> None:
+        """
+        Allow a user to update a column of the Sudoku Board
+        """
         if len(values) != MAX_SCALE:
             raise Exception(f"Editing a Column needs {MAX_SCALE} values!\n{values}")
         counter = 0
@@ -64,14 +70,23 @@ class Board:
             self.the_board[x_pos, y] = values[counter]
             counter += 1
 
-    def edit_single_tile(self, y_pos: int, x_pos: int, value: int) -> None:
+    def set_tile(self, y_pos: int, x_pos: int, value: int) -> None:
+        """
+        Allow a user to set a single tile of the Sudoku Board
+        """
         if check_single_digit_int(value):
             self.the_board[x_pos, y_pos] = value
 
     def display(self):
+        """
+        Print the entire Board
+        """
         print(self.the_board)
 
-    def get_tile_value(self, y_pos: int, x_pos: int) -> int:
+    def get_tile(self, y_pos: int, x_pos: int) -> int:
+        """
+        Getter for a single tile
+        """
         return self.the_board[x_pos, y_pos]
 
 

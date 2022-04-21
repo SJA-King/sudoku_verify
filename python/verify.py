@@ -15,7 +15,7 @@ def verify_board(a_board: bd.Board, diag: bool):
     """
     Run all the verification methods to validate if a sudoku solution is VALID!
     """
-    print(f"Verifying Board:\n{a_board.display()}")
+    print(f"Verifying...")
     board_valid = True
     verify_methods = [verify_squares(a_board),
                       verify_rows(a_board),
@@ -48,7 +48,7 @@ def verify_squares(a_board: bd.Board) -> (bool, [str]):
             this_square = []
             for row in range(i[0], i[1]):
                 for col in range(j[0], j[1]):
-                    this_square.append(a_board.get_tile_value(col, row))
+                    this_square.append(a_board.get_tile(col, row))
 
             if NUMBERS == set(this_square):
                 square_valid = True
@@ -70,7 +70,7 @@ def verify_rows(a_board: bd.Board) -> (bool, [str]):
         row_valid = False
         this_row = []
         for col in range(bd.MAX_SCALE):
-            this_row.append(a_board.get_tile_value(col, row))
+            this_row.append(a_board.get_tile(col, row))
 
         if NUMBERS == set(this_row):
             row_valid = True
@@ -91,7 +91,7 @@ def verify_columns(a_board: bd.Board) -> (bool, [str]):
         column_valid = False
         this_column = []
         for row in range(bd.MAX_SCALE):
-            this_column.append(a_board.get_tile_value(col, row))
+            this_column.append(a_board.get_tile(col, row))
 
         if set(NUMBERS) == set(this_column):
             column_valid = True
@@ -123,9 +123,6 @@ def args_parser():
         level = logging.DEBUG
         logging.basicConfig(level=level, format='[%(levelname)s] - %(message)s')
         logging.debug(f"Args: {args}")
-    if args.info:
-        level = logging.INFO
-        logging.basicConfig(level=level, format='[%(levelname)s] - %(message)s')
 
     return args
 
